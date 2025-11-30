@@ -7,5 +7,5 @@ Repository to track my Java progress.
 
 > Bonuses for bonus questions in lab exercises.
 
-> Projects for more complex codes.
+> Project for the project codes.
 
