@@ -58,7 +58,24 @@ public class Main {
     }
 
     public static int bestDayOfMonth(int month) {
-        return 1234;
+        if(month<0 || month>=months.length) {
+            return -1;
+        }
+        int bestDay = 0;
+        long maxProfit = 0;
+
+        for(int i = 0; i < DAYS; i++) {
+            long total = 0;
+            for(int j = 0; j < commodities.length; j++) {
+                total = total + data[month][i][j];
+            }
+            if(total > maxProfit) {
+                maxProfit = total;
+                bestDay = i + 1;
+            }
+
+        }
+        return bestDay;
     }
 
     public static String bestMonthForCommodity(String comm) {
