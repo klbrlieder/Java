@@ -1,5 +1,6 @@
 // Main.java — Students version
 import java.io.*;
+import java.util.*;
 
 public class Main {
     static final int MONTHS = 12;
@@ -64,7 +65,7 @@ public class Main {
         for(int i=0;i<commodities.length;i++) {
             int profit = 0;
             for(int j=0; j<DAYS; j++) {
-                profit = profit + data[month][i][j];
+                profit = profit + data[month][j][i];
             }
             if  (profit > maxProfit) {
                 maxProfit = profit;
@@ -188,7 +189,26 @@ public class Main {
     }
 
     public static int daysAboveThreshold(String comm, int threshold) {
-        return 1234;
+        int commIndex = -1;
+        for (int i = 0; i < commodities.length; i++) {
+            if (commodities[i].equals(comm)) {
+                commIndex = i;
+                break;
+            }
+        }
+        if (commIndex == -1){
+            return -1;
+        }
+
+        int count = 0;
+        for (int m = 0; m < MONTHS; m++) {
+            for (int d = 0; d < DAYS; d++) {
+                if (data[m][d][commIndex] > threshold) {
+                    count = count + 1;
+                }
+            }
+        }
+        return count;
     }
 
     public static int biggestDailySwing(int month) {
@@ -247,7 +267,7 @@ public class Main {
         if (month < 0 || month >= MONTHS) {
             return "INVALID_MONTH";
         }
-        int maxProfit = 0;
+        int maxProfit = Integer.MIN_VALUE;
         String bestWeek = "";
 
         for(int week = 0; week < 4; week++) {
