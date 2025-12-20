@@ -1,6 +1,5 @@
 // Main.java — Students version
 import java.io.*;
-import java.util.*;
 
 public class Main {
     static final int MONTHS = 12;
@@ -15,7 +14,42 @@ public class Main {
 
     // ======== REQUIRED METHOD LOAD DATA (Students fill this) ========
     public static void loadData() {
+        for (int m = 0; m < months.length; m++) {
+            String fileName = "Data_Files/" + months[m] + ".txt";
+            File file = new File(fileName);
 
+            if (!file.exists()) continue;
+
+            try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+                String line = br.readLine();
+                while ((line = br.readLine()) != null) {
+
+                    if (line.trim().isEmpty()) continue;
+
+                    String[] parts = line.split(",");
+
+                    if (parts.length < 3) continue;
+
+                    int day = Integer.parseInt(parts[0].trim());
+                    String commodityName = parts[1].trim();
+                    int profit = Integer.parseInt(parts[2].trim());
+
+                    int commIndex = -1;
+                    for (int i = 0; i < commodities.length; i++) {
+                        if (commodities[i].equals(commodityName)) {
+                            commIndex = i;
+                            break;
+                        }
+                    }
+                    if (commIndex != -1 && day >= 1 && day <= DAYS) {
+                        data[m][day - 1][commIndex] = profit;
+                    }
+                }
+            } catch (IOException e) {
+                System.out.println("Error while reading the files!");
+            }
+
+        }
     }
 
     // ======== 10 REQUIRED METHODS (Students fill these) ========
@@ -38,7 +72,7 @@ public class Main {
             }
 
         }
-        return maxComm + " " + maxProfit;
+        return (maxComm + " " + maxProfit);
     }
 
     public static int totalProfitOnDay(int month, int day) {
@@ -54,7 +88,24 @@ public class Main {
     }
 
     public static int commodityProfitInRange(String commodity, int from, int to) {
-        return 1234;
+        int commIndex = -1;
+        for (int i = 0; i < commodities.length; i++) {
+            if (commodities[i].equals(commodity)) {
+                commIndex = i;
+                break;
+            }
+        }
+        if (commIndex == -1 || from < 1 || to > DAYS || from > to) {
+            return -99999;
+        }
+
+        int total = 0;
+        for (int i = 0; i < MONTHS; i++) {
+            for (int d = from - 1; d <= to - 1; d++) {
+                total = total + data[i][d][commIndex];
+            }
+        }
+        return total;
     }
 
     public static int bestDayOfMonth(int month) {
