@@ -130,7 +130,31 @@ public class Main {
     }
 
     public static String bestMonthForCommodity(String comm) {
-        return "DUMMY";
+        int commIndex = -1;
+        for (int i = 0; i < commodities.length; i++) {
+            if (commodities[i].equals(comm)) {
+                commIndex = i;
+                break;
+            }
+        }
+        if (commIndex == -1) {
+            return "INVALID_COMMODITY";
+        }
+
+        int maxProfit = 0;
+        int bestMonth = 0;
+
+        for (int m = 0; m < MONTHS; m++) {
+            int monthTotal = 0;
+            for (int d = 0; d < DAYS; d++) {
+                monthTotal = monthTotal + data[m][d][commIndex];
+            }
+            if (monthTotal > maxProfit) {
+                maxProfit = monthTotal;
+                bestMonth = m;
+            }
+        }
+        return months[bestMonth];
     }
 
     public static int consecutiveLossDays(String comm) {
