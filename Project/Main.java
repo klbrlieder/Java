@@ -19,24 +19,25 @@ public class Main {
             String fileName = "Data_Files/" + months[m] + ".txt";
             File file = new File(fileName);
 
-            if (!file.exists()) continue;
+            if (!file.exists()) continue; //checking if file exists
 
             try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-                String line = br.readLine();
+                String line = br.readLine(); //skipping first line
                 while ((line = br.readLine()) != null) {
 
-                    if (line.trim().isEmpty()) continue;
+                    if (line.trim().isEmpty()) continue; //checking if line exists
 
                     String[] parts = line.split(",");
 
-                    if (parts.length < 3) continue;
+                    if (parts.length != 3) continue; //checking if we have exact number of parts from line
 
+                    //assigning line parts
                     int day = Integer.parseInt(parts[0].trim());
                     String commodityName = parts[1].trim();
                     int profit = Integer.parseInt(parts[2].trim());
 
                     int commIndex = -1;
-                    for (int i = 0; i < commodities.length; i++) {
+                    for (int i = 0; i < commodities.length; i++) { //finding commodity int from string
                         if (commodities[i].equals(commodityName)) {
                             commIndex = i;
                             break;
@@ -67,7 +68,7 @@ public class Main {
             for(int j=0; j<DAYS; j++) {
                 profit = profit + data[month][j][i];
             }
-            if  (profit > maxProfit) {
+            if  (profit > maxProfit) { //comparing profits with current max profit
                 maxProfit = profit;
                 maxComm = commodities[i];
             }
@@ -96,7 +97,7 @@ public class Main {
                 break;
             }
         }
-        if (commIndex == -1 || from < 1 || to > DAYS || from > to) {
+        if (commIndex == -1 || from < 1 || to > DAYS || from > to) { //checking for invalid values
             return -99999;
         }
 
@@ -180,7 +181,8 @@ public class Main {
                     if (currentStreak > maxStreak) {
                         maxStreak = currentStreak;
                     }
-                } else {
+                }
+                else { //reset streak if positive gain
                     currentStreak = 0;
                 }
             }
@@ -189,6 +191,7 @@ public class Main {
     }
 
     public static int daysAboveThreshold(String comm, int threshold) {
+
         int commIndex = -1;
         for (int i = 0; i < commodities.length; i++) {
             if (commodities[i].equals(comm)) {
@@ -212,7 +215,9 @@ public class Main {
     }
 
     public static int biggestDailySwing(int month) {
-        if (month < 0 || month >= MONTHS) return -99999;
+        if (month < 0 || month >= MONTHS) {
+            return -99999;
+        }
 
         int maxSwing = 0;
         for (int d = 0; d < DAYS - 1; d++) {
@@ -271,7 +276,7 @@ public class Main {
         String bestWeek = "";
 
         for(int week = 0; week < 4; week++) {
-            int firstDay = week * 7;
+            int firstDay = week * 7; //week 1 starts at 0, week 2 starts at 7 etc.
             int weekProfit = 0;
 
             for(int day =firstDay; day<firstDay+7; day++) {
